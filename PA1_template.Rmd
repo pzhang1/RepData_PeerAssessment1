@@ -9,6 +9,7 @@ output:
 ```{r global_options, include=FALSE}
 library(knitr)
 library(ggplot2)
+library(dmm)
 opts_chunk$set(echo=TRUE,fig.width=12, fig.height=8)
 ```
 
@@ -65,3 +66,25 @@ The mean of total number of steps taken per day after imputing missing data is `
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+```{r}
+#Create a new factor variable in the dataset with two levels - "weekday" and "weekend" 
+activity.new$date <- as.Date(activity.new$date, format = "%Y-%m-%d")
+
+#create a vector of weekdays
+weekdays1 <- c('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday')
+#Use `%in%` and `weekdays` to create a logical vector
+#convert to `factor` and specify the `levels/labels`
+activity.new$wDay <- factor((weekdays(activity.new$date) %in% weekdays1), levels=c(FALSE, TRUE), labels=c('weekend', 'weekday')) 
+
+#panel plot for weekday and weekend data
+par(mfrow=c(2,1))
+activity.new.wkend <- activity.new[activity.new$wDay=="weekend",]
+fivemin.avg.wkend <- tapply(activity.new.wkend$steps, activity.new.wkend$interval, mean)
+plot(unique(activity.new.wkend$interval),fivemin.avg.wkend,type='l',xlab='5-min interval', ylab='Daily Average',main="weekend")
+
+activity.new.wkday <- activity.new[activity.new$wDay=="weekday",]
+fivemin.avg.wkday <- tapply(activity.new.wkday$steps, activity.new.wkday$interval, mean)
+plot(unique(activity.new.wkday$interval),fivemin.avg.wkday,type='l',xlab='5-min interval', ylab='Daily Average',main="weekday")
+
+```
