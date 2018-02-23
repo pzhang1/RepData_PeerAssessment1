@@ -41,7 +41,27 @@ plot(unique(activity$interval),fivemin.avg,type='l',xlab='5-min interval', ylab=
 On Average across all days in the dataset, the `r names(which(fivemin.avg==max(fivemin.avg)))` 5-min interval contains the maximum number of steps.
 
 ## Imputing missing values
+```{r}
+# Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
+na.total <- sum(is.na(activity$steps))
+# Impute the missing values using the mean of that 5-min interval
+#Create a new dataset that is equal to the original dataset but with the missing data filled in.
+activity.new <- activity
+activity.new$steps[is.na(activity$steps)]<- fivemin.avg[as.character(activity$interval[na.index])]
 
+# Make a histogram of the total number of steps taken each day
+# Calculate total number of steps per day
+total_steps.new <- tapply(activity.new$steps,activity.new$date,sum)
+# Plot the histrogram
+qplot(total_steps.new, geom="histogram")
+# Calculate and report the mean and median 
+mean.steps.new <- mean(total_steps.new)
+median.steps.new <- median(total_steps.new)
+```
+
+The total number of missing values in the dataset is `r na.total`.
+
+The mean of total number of steps taken per day after imputing missing data is `r mean.steps.new`. The meadian of total number of steps taken per day after imputing missing data is `r median.steps.new`After observing from the previous data without imputing missing data, the mean does not change, the median changed a little bit. 
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
