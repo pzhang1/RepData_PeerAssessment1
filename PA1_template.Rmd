@@ -32,8 +32,13 @@ median.steps <- median(total_steps, na.rm = TRUE)
 The mean of total number of steps taken per day is `r mean.steps`. The meadian of total number of steps taken per day is `r median.steps`
 
 ## What is the average daily activity pattern?
-
-
+```{r}
+# Time Series plot of 5-mins daily avarage steps
+fivemin.avg <- tapply(activity$steps, activity$interval, mean, na.rm=TRUE)
+plot(unique(activity$interval),fivemin.avg,type='l',xlab='5-min interval', ylab='Daily Average')
+#Get the maximum 5 mins interval
+```
+On Average across all days in the dataset, the `r names(which(fivemin.avg==max(fivemin.avg)))` 5-min interval contains the maximum number of steps.
 
 ## Imputing missing values
 
