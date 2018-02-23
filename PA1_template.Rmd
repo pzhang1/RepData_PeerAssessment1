@@ -24,11 +24,15 @@ activity <- read.csv('./activity/activity.csv')
 ```{r}
 # Calculate total number of steps per day
 total_steps <- tapply(activity$steps,activity$date,sum)
+total_steps
 # Plot the histrogram
 qplot(total_steps, geom="histogram")
 # Calculate and report the mean and median 
 mean.steps <- mean(total_steps, na.rm = TRUE)
+mean.steps
 median.steps <- median(total_steps, na.rm = TRUE)
+median.steps
+
 ```
 The mean of total number of steps taken per day is `r mean.steps`. The meadian of total number of steps taken per day is `r median.steps`
 
@@ -36,6 +40,7 @@ The mean of total number of steps taken per day is `r mean.steps`. The meadian o
 ```{r}
 # Time Series plot of 5-mins daily avarage steps
 fivemin.avg <- tapply(activity$steps, activity$interval, mean, na.rm=TRUE)
+fivemin.avg
 plot(unique(activity$interval),fivemin.avg,type='l',xlab='5-min interval', ylab='Daily Average')
 #Get the maximum 5 mins interval
 ```
@@ -45,8 +50,10 @@ On Average across all days in the dataset, the `r names(which(fivemin.avg==max(f
 ```{r}
 # Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 na.total <- sum(is.na(activity$steps))
+na.total
 # Impute the missing values using the mean of that 5-min interval
 #Create a new dataset that is equal to the original dataset but with the missing data filled in.
+na.index <- is.na(activity$steps)
 activity.new <- activity
 activity.new$steps[is.na(activity$steps)]<- fivemin.avg[as.character(activity$interval[na.index])]
 
@@ -57,7 +64,9 @@ total_steps.new <- tapply(activity.new$steps,activity.new$date,sum)
 qplot(total_steps.new, geom="histogram")
 # Calculate and report the mean and median 
 mean.steps.new <- mean(total_steps.new)
+mean.steps.new
 median.steps.new <- median(total_steps.new)
+median.steps.new
 ```
 
 The total number of missing values in the dataset is `r na.total`.
