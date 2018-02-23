@@ -6,8 +6,16 @@ output:
 ---
 
 
-## Loading and preprocessing the data
+```{r global_options, include=FALSE}
+library(knitr)
+opts_chunk$set(echo=TRUE)
+```
 
+
+## Loading and preprocessing the data
+```{r}
+activity <- read.csv('./activity/activity.csv')
+```
 
 
 ## What is mean total number of steps taken per day?
